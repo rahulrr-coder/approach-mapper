@@ -8,8 +8,15 @@ Built for a friend who learns DSA and math and gets stuck at the blank page.
 
 ![screenshot placeholder](docs/screenshot.png)
 
-## How it works (honest note)
-The app calls a **hosted or configured, OpenAI-compatible API**. It is not an offline local model, unless *you* point it at a local server (Ollama, LM Studio, vLLM...) via env vars. Small models give weaker results, and any model can be wrong, so treat the output as a guide. No accuracy claims are made.
+## Open source, bring your own model
+The code is MIT-licensed and model-agnostic. It talks to any OpenAI-compatible chat API, so *you* choose where the model runs by setting three env vars (`LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`):
+
+- **Run a model locally** if your hardware allows: Ollama, LM Studio, vLLM or llama.cpp's server, with any open-weight model (use a vision-capable one if you want image input). Nothing leaves your machine.
+- **Hardware too limited?** Point it at [OpenRouter](https://openrouter.ai) or any hosted cloud API with an API key. Same code, no changes.
+
+No provider-specific code, no lock-in: swapping models or hosts is an env-var change. Text input works on any model; images need a vision-capable one.
+
+Honest note: the app is only as local as the endpoint you configure. If you use a hosted API, your problem text and images are sent to that provider. Small models give weaker results, and any model can be wrong, so treat the output as a guide.
 
 ## Quick start
 ```bash
