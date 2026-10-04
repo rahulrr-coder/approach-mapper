@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+openai>=1
+pillow
+python-dotenv
+python-multipart
+pytest
+httpx
