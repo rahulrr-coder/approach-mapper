@@ -20,7 +20,7 @@ def err(status: int, message: str) -> JSONResponse:
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "model": os.getenv("LLM_MODEL", "")}
+    return {"ok": True}
 
 
 @app.post("/api/map")

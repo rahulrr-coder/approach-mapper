@@ -152,7 +152,7 @@ async function render(a, meta){
 
   try{ const {svg}=await mermaid.render("mmsvg"+Date.now(), mermaidSrc(a.mindmap)); $("mm").innerHTML=svg; }
   catch(e){ $("mm").innerHTML=fallbackList(a.mindmap); }
-  $("foot").textContent=`Answered in ${meta.latency_seconds} s by ${meta.model}. Open source (MIT): run any OpenAI-compatible model, local or hosted, by changing env vars. The approach is a guide and can be wrong.`;
+  $("foot").textContent=`Answered in ${meta.latency_seconds} s. Open source (MIT): run any OpenAI-compatible model, local or hosted, by changing env vars. The approach is a guide and can be wrong.`;
   out.scrollIntoView({behavior:"smooth"});
 }
 
