@@ -1,6 +1,6 @@
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class GivenGoal(BaseModel):
@@ -59,7 +59,8 @@ class Mindmap(BaseModel):
 
 
 class Approach(BaseModel):
-    domain: str  # free-text label, e.g. "coding", "calculus", "physics"
+    category: Literal["math", "science", "coding", "other"] = "other"
+    domain: str  # free-text label, e.g. "calculus", "mechanics", "graphs"
     problem_restated: str
     given_and_goal: GivenGoal
     clues: list[Clue]
@@ -71,3 +72,9 @@ class Approach(BaseModel):
     pitfalls: list[str] = []
     similar_problems: list[str] = []
     unreadable_parts: list[str] = []
+
+    @field_validator("category", mode="before")
+    @classmethod
+    def coerce_category(cls, v):
+        v = str(v).strip().lower()
+        return v if v in {"math", "science", "coding", "other"} else "other"

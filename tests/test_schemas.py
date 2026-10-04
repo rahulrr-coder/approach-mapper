@@ -6,7 +6,8 @@ from app.schemas import Approach
 
 def good():
     return {
-        "domain": "coding",
+        "category": "coding",
+        "domain": "hashing",
         "problem_restated": "Find two numbers that add to a target.",
         "given_and_goal": {"given": ["array", "target"], "find": "indices"},
         "clues": [{"clue": "two numbers", "suggests": "pairs / lookup"}],
@@ -48,3 +49,9 @@ def test_hint_ladder_exactly_four():
     d["hint_ladder"] = ["1", "2", "3"]
     with pytest.raises(ValidationError):
         Approach.model_validate(d)
+
+
+def test_unknown_category_becomes_other():
+    d = good()
+    d["category"] = "Biology?"
+    assert Approach.model_validate(d).category == "other"

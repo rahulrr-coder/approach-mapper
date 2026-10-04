@@ -5,76 +5,128 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Approach Mapper</title>
 <style>
-:root{--bg:#fafaf7;--fg:#1d1d1b;--mut:#6b6b66;--card:#fff;--bd:#e2e1da;--ac:#2f5d50;--acfg:#fff;--warn:#fff4d6;--warnbd:#e5c35a}
-@media(prefers-color-scheme:dark){:root{--bg:#161715;--fg:#ecece6;--mut:#a0a09a;--card:#1f201e;--bd:#33352f;--ac:#7fc4ae;--acfg:#10201b;--warn:#3a321a;--warnbd:#8a7430}}
+:root{
+  --bg:#f6f5f1;--fg:#1c1d1b;--mut:#6a6b66;--card:#fff;--bd:#e4e2da;--soft:#f0eee8;
+  --ac:#2b5fd9;--acfg:#fff;--shadow:0 1px 2px rgba(20,20,10,.05),0 6px 20px rgba(20,20,10,.05);
+  --warn:#fff4d6;--warnbd:#e5c35a;
+  --c-math:#7c4dff;--c-science:#0b8f6a;--c-coding:#2b5fd9;--c-other:#7a7a72;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#12130f;--fg:#ecece6;--mut:#a2a39c;--card:#1c1d19;--bd:#31332c;--soft:#252721;
+  --ac:#7fa6ff;--acfg:#0d1630;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  --warn:#3a321a;--warnbd:#8a7430;
+  --c-math:#b39bff;--c-science:#5fd8b0;--c-coding:#7fa6ff;--c-other:#b0b0a6;}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
-main{max-width:1240px;margin:0 auto;padding:20px 16px 40px}
-h1{font-size:1.6rem;margin:.2em 0 0}h2{font-size:1.1rem;margin:0 0 .5em}
-.sub{color:var(--mut);margin:.2em 0 1.2em}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;margin:14px 0}
-textarea{width:100%;min-height:130px;padding:10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;resize:vertical}
-label{font-weight:600;display:block;margin-bottom:6px}
-button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--fg);padding:9px 14px}
-button.primary{background:var(--ac);color:var(--acfg);border-color:var(--ac);font-weight:600}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--ac)}
+main{max-width:1240px;margin:0 auto;padding:0 18px 40px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:18px 0 6px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--ac);color:var(--acfg);display:grid;place-items:center}
+.pill{font-size:.78rem;border:1px solid var(--bd);background:var(--card);border-radius:999px;padding:3px 10px;color:var(--mut);text-decoration:none}
+.pill b{color:var(--fg);font-weight:600}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+.hero{padding:26px 0 18px;max-width:720px}
+h1{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.15;margin:0 0 .35em;letter-spacing:-.02em}
+.hero p{color:var(--mut);margin:0;font-size:1.05rem}
+h2{font-size:1rem;margin:0 0 .6em;letter-spacing:.01em}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px 20px;margin:0 0 16px;box-shadow:var(--shadow)}
+textarea{width:100%;min-height:190px;padding:12px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);color:var(--fg);font:inherit;resize:vertical}
+label.l{font-weight:600;display:block;margin-bottom:6px;font-size:.92rem}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);padding:9px 14px;transition:.12s}
+button:hover:not(:disabled){border-color:var(--ac)}
+button.primary{background:var(--ac);color:var(--acfg);border-color:var(--ac);font-weight:600;padding:10px 20px}
+button.primary:hover:not(:disabled){filter:brightness(1.08)}
 button:disabled{opacity:.6;cursor:wait}
 :focus-visible{outline:3px solid var(--ac);outline-offset:2px}
-#drop{border:2px dashed var(--bd);border-radius:8px;padding:16px;text-align:center;color:var(--mut);margin-top:10px}
+.top{display:grid;grid-template-columns:1.15fr 1fr;gap:18px;align-items:stretch}
+.top>div{display:flex;flex-direction:column;min-width:0}
+.top textarea{flex:1}
+#drop{flex:1;border:2px dashed var(--bd);border-radius:12px;padding:18px;text-align:center;color:var(--mut);display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;background:var(--soft)}
 #drop.over{border-color:var(--ac);color:var(--fg)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 #thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-#thumbs span{font-size:.85rem;background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:2px 8px}
-#thumbs img{height:56px;border-radius:6px;display:block}
-.thumb{display:flex;flex-direction:column;gap:2px}
-.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
+#thumbs img{height:60px;border-radius:8px;display:block;border:1px solid var(--bd)}
+.thumb{display:flex;flex-direction:column;gap:2px;font-size:.8rem}
+.thumb span{cursor:pointer;color:var(--mut)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;margin-right:6px}
 @keyframes s{to{transform:rotate(360deg)}}
 #error{color:#b3261e;margin-top:10px}@media(prefers-color-scheme:dark){#error{color:#ff8a80}}
-.warn{background:var(--warn);border:1px solid var(--warnbd)}
-ul,ol{padding-left:1.3em;margin:.3em 0}
-.clue b{font-weight:600}.mut{color:var(--mut)}
-.step{margin:.7em 0}.step .think{font-weight:600}
-details{border:1px solid var(--bd);border-radius:8px;padding:8px 12px;margin:8px 0}
-summary{cursor:pointer;font-weight:600}
-#mm{overflow-x:auto}#mm svg{max-width:100%;height:auto}
-footer{color:var(--mut);font-size:.85rem;text-align:center;margin-top:28px}
-.hidden{display:none}
-.top{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-.top textarea{min-height:170px}.top #drop{margin-top:0}
-#form{margin-bottom:0}
+.warn{background:var(--warn);border-color:var(--warnbd)}
+ul{padding-left:1.2em;margin:.3em 0}li{margin:.25em 0}
+.mut{color:var(--mut)}
+.cats{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.cat{font-size:.82rem;padding:4px 12px;border-radius:999px;border:1px solid var(--bd);color:var(--mut);background:var(--card)}
+.cat.on{color:#fff;border-color:transparent;font-weight:600}
+@media(prefers-color-scheme:dark){.cat.on{color:#101010}}
+.cat.on.math{background:var(--c-math)}.cat.on.science{background:var(--c-science)}.cat.on.coding{background:var(--c-coding)}.cat.on.other{background:var(--c-other)}
+.topic{font-weight:600}
+.kv{background:var(--soft);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:.95rem}
+.clue b{font-weight:600}
+.step{display:flex;gap:12px;margin:.9em 0}
+.num{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ac);color:var(--acfg);display:grid;place-items:center;font-size:.8rem;font-weight:700}
+.step .think{font-weight:600}
+.hint{border:1px solid var(--bd);border-radius:12px;padding:10px 14px;margin:8px 0;background:var(--soft)}
+.hint .lv{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.hint.spoil{border-color:var(--warnbd)}
+#mm{overflow-x:auto;text-align:center}#mm svg{max-width:100%;height:auto}
 .grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:0 18px;align-items:start}
 .grid>div{min-width:0}
-
+footer{color:var(--mut);font-size:.85rem;text-align:center;margin-top:30px;line-height:1.7}
+.hidden{display:none}
 @media(max-width:900px){.top,.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <main>
-  <h1>Approach Mapper</h1>
-  <p class="sub">Stuck at "where do I start?" Paste or snap a STEM problem and get the way of thinking: the clues, the pattern, a decision map and hints, not the answer.</p>
+  <header>
+    <div class="brand"><span class="logo" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="9" r="2.5"/><circle cx="9" cy="19" r="2.5"/><path d="M8.2 7.2l7.6 1M7.2 8.2l1 8.6M16.6 11l-5.8 6.4"/></svg></span>Approach Mapper</div>
+    <nav>
+      <span class="pill">Hacktoberfest 2026 · <b>Build for a Friend</b></span>
+      <a class="pill" href="https://github.com/rahulrr-coder/approach-mapper" target="_blank" rel="noopener">GitHub · <b>rahulrr-coder</b></a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Know <em>how to start</em> any STEM problem.</h1>
+    <p>Paste a math, science or coding problem, or snap a photo. You get the way of thinking: what kind of problem it is, the clues, a map of the approach, and hints that reveal one at a time. Not the answer.</p>
+  </section>
 
   <form id="form" class="card">
-    <div class="top"><div>
-    <label for="text">Problem</label>
-    <textarea id="text" placeholder="Paste your problem here (coding, math, physics, stats...)"></textarea>
-    </div><div>
-    <label>Or add files</label>
-    <div id="drop">Drop images (jpg/png/webp, max 3) or a .txt file here, or
-      <button type="button" id="pick">Choose files</button>
-      <button type="button" id="cam">Take photo</button>
-      <input id="file" type="file" accept="image/jpeg,image/png,image/webp,.txt,text/plain" multiple hidden>
-      <input id="camfile" type="file" accept="image/*" capture="environment" hidden>
+    <div class="top">
+      <div>
+        <label class="l" for="text">Your problem</label>
+        <textarea id="text" placeholder="Type or paste the problem here…"></textarea>
+      </div>
+      <div>
+        <label class="l">Or use a picture / file</label>
+        <div id="drop">
+          <div>Drop images (jpg, png, webp, up to 3) or a .txt file</div>
+          <div class="btns">
+            <button type="button" id="pick">Choose files</button>
+            <button type="button" id="clip">Paste from clipboard</button>
+          </div>
+          <input id="file" type="file" accept="image/*,.txt,text/plain" multiple hidden>
+        </div>
+        <div id="thumbs"></div>
+      </div>
     </div>
-    <div id="thumbs"></div></div></div>
     <div class="row">
       <button class="primary" id="go" type="submit">Map my approach</button>
       <button type="button" id="sample">Try a sample</button>
     </div>
-    <div id="status" aria-live="polite" role="status"></div>
+    <div id="status" class="mut" aria-live="polite" role="status"></div>
     <div id="error" aria-live="assertive" role="alert"></div>
   </form>
 
   <div id="out" class="hidden"></div>
-  <footer id="foot">Open source (MIT): run any OpenAI-compatible model, local or hosted, by changing env vars. The approach is a guide and can be wrong.</footer>
+
+  <footer id="foot">
+    Open source (MIT) · works with any OpenAI-compatible model, local or hosted, via env vars.<br>
+    The approach is a guide and can be wrong. Built by <a href="https://github.com/rahulrr-coder" target="_blank" rel="noopener">@rahulrr-coder</a> for the Hacktoberfest 2026 challenge.
+  </footer>
 </main>
 
 <script type="module">
@@ -84,8 +136,8 @@ mermaid.initialize({startOnLoad:false,securityLevel:"strict",theme:matchMedia("(
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let files = [];
-
 const SAMPLE = "Given an array of integers nums and an integer target, return the indices of the two numbers that add up to target. Each input has exactly one solution and you may not use the same element twice. The array can have up to 10^5 elements.";
+const FOOT = $("foot").innerHTML;
 
 function addFiles(list){
   for(const f of list){
@@ -99,21 +151,43 @@ function renderThumbs(){
   files.forEach((f,i)=>{
     const d=document.createElement("div"); d.className="thumb";
     if(f.type.startsWith("image/")){const im=document.createElement("img");im.src=URL.createObjectURL(f);im.alt=f.name;d.append(im);}
-    const s=document.createElement("span"); s.textContent=f.name+" ✕"; s.style.cursor="pointer"; s.title="Remove";
+    const s=document.createElement("span"); s.textContent=(f.name||"pasted image")+" ✕"; s.title="Remove";
     s.onclick=()=>{files.splice(i,1);renderThumbs();}; d.append(s); t.append(d);
   });
 }
+function addText(t){ const ta=$("text"); ta.value=(ta.value?ta.value+"\n":"")+t; }
+
 $("pick").onclick=()=>$("file").click();
-$("cam").onclick=()=>$("camfile").click();
 $("file").onchange=e=>{addFiles(e.target.files);e.target.value="";};
-$("camfile").onchange=e=>{addFiles(e.target.files);e.target.value="";};
+
+// clipboard: images become attachments, text goes into the box
+$("clip").onclick=async()=>{
+  $("error").textContent="";
+  try{
+    const items=await navigator.clipboard.read(); let got=false;
+    for(const it of items){
+      const img=it.types.find(t=>t.startsWith("image/"));
+      if(img){const b=await it.getType(img);addFiles([new File([b],"pasted."+img.split("/")[1],{type:img})]);got=true;}
+      else if(it.types.includes("text/plain")){addText(await (await it.getType("text/plain")).text());got=true;}
+    }
+    if(!got) $("error").textContent="Clipboard has no image or text.";
+  }catch(e){
+    try{ const t=await navigator.clipboard.readText(); if(t) addText(t); else $("error").textContent="Clipboard is empty."; }
+    catch{ $("error").textContent="Couldn't read the clipboard. Allow clipboard access, or press Ctrl+V."; }
+  }
+};
+document.addEventListener("paste",e=>{
+  const imgs=[...(e.clipboardData?.files||[])].filter(f=>f.type.startsWith("image/"));
+  if(imgs.length){e.preventDefault();addFiles(imgs);}
+});
+
 const drop=$("drop");
 ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over");}));
 ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over");}));
 drop.addEventListener("drop",e=>addFiles(e.dataTransfer.files));
 $("sample").onclick=()=>{$("text").value=SAMPLE;files=[];renderThumbs();$("form").requestSubmit();};
 
-// build Mermaid flowchart from nodes/edges; labels stripped of syntax characters
+// Mermaid flowchart built here from nodes/edges; labels stripped of syntax characters
 const clean = s => String(s??"").replace(/[\[\](){}"'<>`|#;&\\]/g," ").replace(/\s+/g," ").trim();
 function mermaidSrc(mm){
   const id = new Map(mm.nodes.map((n,i)=>[n.id,"N"+i]));
@@ -125,41 +199,47 @@ function mermaidSrc(mm){
 }
 function fallbackList(mm){
   const by=new Map(mm.nodes.map(n=>[n.id,n]));
-  return "<ul>"+mm.edges.map(e=>`<li>${esc(by.get(e.from)?.label)} → ${e.label?`<i>${esc(e.label)}</i> → `:""}${esc(by.get(e.to)?.label)}</li>`).join("")+"</ul>";
+  return "<ul style='text-align:left'>"+mm.edges.map(e=>`<li>${esc(by.get(e.from)?.label)} → ${e.label?`<i>${esc(e.label)}</i> → `:""}${esc(by.get(e.to)?.label)}</li>`).join("")+"</ul>";
 }
+
+const CATS=[["math","Math"],["science","Science"],["coding","Coding"],["other","Other"]];
 
 async function render(a, meta){
   const li = arr => arr?.length ? "<ul>"+arr.map(x=>`<li>${esc(x)}</li>`).join("")+"</ul>" : "";
   let top = "", L = "", R = "";
   if(a.unreadable_parts?.length) top=`<div class="card warn" role="alert"><h2>Couldn't read some parts</h2>${li(a.unreadable_parts)}<p class="mut">Try a clearer photo or paste the text.</p></div>`;
-  L+=`<div class="card"><span class="mut">${esc(a.domain)}</span><p>${esc(a.problem_restated)}</p>
-    <p><b>Given:</b> ${esc((a.given_and_goal.given||[]).join("; "))}<br><b>Find:</b> ${esc(a.given_and_goal.find)}</p></div>`;
-  L+=`<div class="card"><h2>Pattern: ${esc(a.pattern.name)}</h2><p>${esc(a.pattern.why_it_fits)}</p>
-    ${a.clues.length?"<h2>Clues in the problem</h2><ul>"+a.clues.map(c=>`<li class="clue"><b>${esc(c.clue)}</b> <span class="mut">→ ${esc(c.suggests)}</span></li>`).join("")+"</ul>":""}</div>`;
-  L+=`<div class="card"><h2>Steps</h2>`+a.steps.map(s=>`<div class="step"><div class="think">${s.n}. Ask yourself: ${esc(s.think)}</div><div>Then: ${esc(s.do)}</div></div>`).join("")+`</div>`;
-  R+=`<div class="card mapcard"><h2>Decision map</h2><div id="mm"></div></div>`;
-  R+=`<div class="card"><h2>Hints (one at a time)</h2><div id="hints"></div></div>`;
-  const extra=[a.cost_note?`<h2>Cost</h2><p>${esc(a.cost_note)}</p>`:"",a.pitfalls?.length?`<h2>Pitfalls</h2>${li(a.pitfalls)}`:"",a.similar_problems?.length?`<h2>Similar problems</h2>${li(a.similar_problems)}`:""].join("");
+
+  L+=`<div class="card"><div class="cats" aria-label="Problem category">${CATS.map(([k,n])=>`<span class="cat ${k}${a.category===k?" on":""}">${n}</span>`).join("")}</div>
+    <div class="topic">${esc(a.domain)}</div><p style="margin:.3em 0 0">${esc(a.problem_restated)}</p>
+    <div class="kv"><b>Given:</b> ${esc((a.given_and_goal.given||[]).join("; "))}<br><b>Find:</b> ${esc(a.given_and_goal.find)}</div></div>`;
+  L+=`<div class="card"><h2>Pattern: ${esc(a.pattern.name)}</h2><p style="margin:0">${esc(a.pattern.why_it_fits)}</p>
+    ${a.clues.length?"<h2 style='margin-top:1em'>Clues in the problem</h2><ul>"+a.clues.map(c=>`<li class="clue"><b>${esc(c.clue)}</b> <span class="mut">→ ${esc(c.suggests)}</span></li>`).join("")+"</ul>":""}</div>`;
+  L+=`<div class="card"><h2>Steps</h2>`+a.steps.map(s=>`<div class="step"><span class="num">${s.n}</span><div><div class="think">${esc(s.think)}</div><div class="mut">${esc(s.do)}</div></div></div>`).join("")+`</div>`;
+
+  R+=`<div class="card"><h2>Decision map</h2><div id="mm"></div></div>`;
+  R+=`<div class="card"><h2>Hints, one at a time</h2><div id="hints"></div></div>`;
+  const extra=[a.cost_note?`<h2>Cost</h2><p style="margin:0 0 .8em">${esc(a.cost_note)}</p>`:"",a.pitfalls?.length?`<h2>Pitfalls</h2>${li(a.pitfalls)}`:"",a.similar_problems?.length?`<h2 style="margin-top:.8em">Similar problems</h2>${li(a.similar_problems)}`:""].join("");
   if(extra) R+=`<div class="card">${extra}</div>`;
-  const h = top+`<div class="grid"><div>${L}</div><div>${R}</div></div>`;
-  const out=$("out"); out.innerHTML=h; out.classList.remove("hidden");
+
+  const out=$("out"); out.innerHTML=top+`<div class="grid"><div>${L}</div><div>${R}</div></div>`; out.classList.remove("hidden");
 
   let shown=0; const hints=$("hints"), btn=document.createElement("button");
   btn.type="button"; btn.textContent="Show hint 1";
-  btn.onclick=()=>{const d=document.createElement("details");d.open=true;d.innerHTML=`<summary>Hint ${shown+1}</summary><p>${esc(a.hint_ladder[shown])}</p>`;hints.insertBefore(d,btn);shown++;
+  btn.onclick=()=>{const d=document.createElement("div");d.className="hint"+(shown==3?" spoil":"");
+    d.innerHTML=`<div class="lv">Hint ${shown+1}${shown==3?" · may spoil":""}</div>${esc(a.hint_ladder[shown])}`;hints.insertBefore(d,btn);shown++;
     if(shown>=a.hint_ladder.length)btn.remove();else btn.textContent="Show hint "+(shown+1)+(shown==3?" (may spoil)":"");};
   hints.append(btn);
 
   try{ const {svg}=await mermaid.render("mmsvg"+Date.now(), mermaidSrc(a.mindmap)); $("mm").innerHTML=svg; }
   catch(e){ $("mm").innerHTML=fallbackList(a.mindmap); }
-  $("foot").textContent=`Answered in ${meta.latency_seconds} s. Open source (MIT): run any OpenAI-compatible model, local or hosted, by changing env vars. The approach is a guide and can be wrong.`;
+  $("foot").innerHTML=`Answered in ${meta.latency_seconds} s.<br>`+FOOT;
   out.scrollIntoView({behavior:"smooth"});
 }
 
 $("form").addEventListener("submit", async e=>{
   e.preventDefault();
   $("error").textContent=""; const go=$("go");
-  go.disabled=true; go.innerHTML='<span class="spin"></span>Mapping…'; $("status").textContent="Working on it, this can take a while.";
+  go.disabled=true; go.innerHTML='<span class="spin"></span>Mapping…'; $("status").textContent="Working on it, this can take a few seconds.";
   const fd=new FormData(); fd.append("text",$("text").value); files.forEach(f=>fd.append("files",f));
   try{
     const r=await fetch("/api/map",{method:"POST",body:fd});

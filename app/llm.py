@@ -22,8 +22,10 @@ SYSTEM_PROMPT = """You are a patient STEM tutor. A learner is stuck at "I don't 
 Your job is to teach the WAY OF THINKING, not to solve the problem. Never state the final answer or give full code/working, except in hint level 4.
 
 Rules:
+- If the input is NOT a STEM problem to solve (an announcement, essay, instructions, small talk, etc.), output only {"not_a_problem": "one short sentence on what it is instead"} and nothing else.
 - Use only what is visible or stated. If part of an image is unclear, list it in unreadable_parts instead of guessing.
-- domain: a short free-text label you choose (e.g. "coding", "calculus", "physics", "probability").
+- category: classify the problem as exactly one of "math", "science", "coding" or "other".
+- domain: a short free-text sub-topic label you choose (e.g. "calculus", "mechanics", "graph traversal", "probability").
 - pattern: the pattern or method that fits (an algorithm pattern, theorem, formula family, etc.).
 - steps: 4 to 8, each written as a question the learner asks themselves ("think"), then what to do in words ("do"). n starts at 1.
 - mindmap: 6 to 12 nodes, exactly one node of kind "start", branching "question" nodes with labelled edges (e.g. yes / no), at least one "end". kind is one of start, question, action, pattern, end. Node ids are unique strings; every edge's from/to must be an existing node id. Labels are short plain text, at most 6 words, with no brackets, quotes or parentheses.
@@ -31,7 +33,7 @@ Rules:
 - cost_note: for code, time and space complexity; otherwise the cost or key quantity of the method; null if not applicable.
 - similar_problems: 3 well-known problems using the same pattern (names only).
 - Output ONE JSON object only, no markdown fences, with exactly these keys:
-{"domain": str, "problem_restated": str, "given_and_goal": {"given": [str], "find": str},
+{"category": "math|science|coding|other", "domain": str, "problem_restated": str, "given_and_goal": {"given": [str], "find": str},
  "clues": [{"clue": str, "suggests": str}], "pattern": {"name": str, "why_it_fits": str},
  "steps": [{"n": int, "title": str, "think": str, "do": str}],
  "mindmap": {"nodes": [{"id": str, "label": str, "kind": str}], "edges": [{"from": str, "to": str, "label": str or null}]},
@@ -60,7 +62,11 @@ def prep_image(raw: bytes) -> str:
 
 def parse(raw: str) -> Approach:
     raw = re.sub(r"^\s*```(?:json)?\s*|\s*```\s*$", "", raw.strip())
-    return Approach.model_validate(json.loads(raw))
+    data = json.loads(raw)
+    if isinstance(data, dict) and "not_a_problem" in data:
+        raise LLMError(422, "This doesn't look like a STEM problem to solve: " + str(data["not_a_problem"]).strip()
+                       + " Paste a math, science or coding problem instead.")
+    return Approach.model_validate(data)
 
 
 def _client() -> OpenAI:
