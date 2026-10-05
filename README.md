@@ -2,11 +2,11 @@
 
 You're stuck on a STEM problem and don't know where to start. Paste it (or snap a photo) and Approach Mapper gives you **the way of thinking**: the clues in the problem, the pattern or method that fits, a decision-path mindmap, step-by-step questions to ask yourself, and a 4-level hint ladder you reveal one click at a time. The answer is never the headline.
 
-Built for a friend who learns DSA and math and gets stuck at the blank page.
+Built for [@harishb2006](https://github.com)  who learns DSA and math and gets stuck at the blank page.
 
-> "Friend's quote goes here." (placeholder)
 
-![screenshot placeholder](docs/screenshot.png)
+<img width="1867" height="996" alt="image" src="https://github.com/user-attachments/assets/8b4488c5-e83d-41a1-bab1-e1f387736e38" />
+
 
 ## Open source, bring your own model
 The code is MIT-licensed and model-agnostic. It talks to any OpenAI-compatible chat API, so *you* choose where the model runs by setting three env vars (`LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`):
