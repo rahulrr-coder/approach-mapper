@@ -5,7 +5,9 @@ You're stuck on a STEM problem and don't know where to start. Paste it (or snap 
 Built for [@harishb2006](https://github.com/harishb2006) who learns DSA and math and gets stuck at the blank page.
 
 
-![Approach Mapper mapping a calculus problem from a photo](docs/screenshot.png)
+[![Approach Mapper mapping a calculus problem from a photo. Click to watch the demo video.](docs/screenshot.png)](https://www.youtube.com/watch?v=OmtOKRfhhTU)
+
+**[▶ Watch the demo video](https://www.youtube.com/watch?v=OmtOKRfhhTU)**
 
 
 ## Open source, bring your own model
